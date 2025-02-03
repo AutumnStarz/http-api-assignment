@@ -1,15 +1,18 @@
-const users = {};
+
 
 const respondJSON = (request, response, status, object) => {
-  
-};
+  const content = JSON.stringify(object);
+  const headers = {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(content, 'utf8'),
+  };
 
-const getUsers = (request, response) => {
+  response.writeHead(status, headers);
+  if(request.method !== 'HEAD') {
+    response.write(content);
+  }
 
-};
-
-const updateUser = (request, response) => {
-
+  response.end();
 };
 
 const notFound = (request, response) => {
@@ -21,7 +24,7 @@ const notFound = (request, response) => {
   return respondJSON(request, response, 404, responseJSON);
 };
 
-const success = (request, response) => {
+const getSuccess = (request, response) => {
     const responseJSON = {
         message: 'This is a successful response.',
         id: 'success',
@@ -31,8 +34,6 @@ const success = (request, response) => {
 };
 
 module.exports = {
-  getUsers,
-  updateUser,
   notFound,
-  success,
+  getSuccess,
 };
