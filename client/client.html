@@ -3,9 +3,46 @@
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-  
   <script>
+    document.addEventListener('DOMContentLoaded', () => { //wait for the DOM to load
+      const sendButton = document.getElementById('send');
+      const pageSelect = document.getElementById('page');
+      const typeSelect = document.getElementById('type');
+      const contentSection = document.getElementById('content');
 
+      sendButton.addEventListener('click', () => {
+        const page = pageSelect.value;
+        const acceptType = typeSelect.value;
+        const url = page;
+
+        fetch(url, { //fetch the url
+          method: 'GET',
+          headers: {
+            'Accept': acceptType,
+          },
+        })
+          .then((response) => { //handle the response
+            const contentType = response.headers.get('Content-Type');
+            return response.text().then((rawText) => {
+              console.log(rawText);
+              if (contentType.includes('application/json')) { //check the content type
+                const jsonData = JSON.parse(rawText);
+                contentSection.textContent = JSON.stringify(jsonData, null, 2);
+              } else if (contentType.includes('text/xml')) {
+                const parser = new DOMParser();
+                const xmlData = parser.parseFromString(rawText, 'application/xml');
+                const serializer = new XMLSerializer();
+                contentSection.textContent = serializer.serializeToString(xmlData);
+              } else {
+                contentSection.textContent = rawText; 
+              }
+            });
+          })
+          .catch((error) => { //catch any errors
+            console.error('Error:', error);
+          });
+      });
+    });
   </script>
 </head>
 <body>
