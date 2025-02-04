@@ -1,18 +1,17 @@
-
-//XML conversion function (i hope this is right i hate xml formatting??)
+// XML conversion function (i hope this is right i hate xml formatting??)
 const convertObjectToXML = (object, status) => {
   let xml = '\n<response>';
   if (status === 200) {
-    xml += `<message>${object.message}</message>`; //add message to xml
+    xml += `<message>${object.message}</message>`; // add message to xml
   } else {
-    xml += `<message>${object.message}</message>`; //add message to xml
-    xml += `<id>${object.id}</id>`; //add id to xml
+    xml += `<message>${object.message}</message>`; // add message to xml
+    xml += `<id>${object.id}</id>`; // add id to xml
   }
   xml += '</response>';
   return xml;
 };
 
-const respond = (request, response, status, object) => { //function to respond to requests
+const respond = (request, response, status, object) => { // function to respond to requests
   let responseContent = '';
   let contentType = 'application/json';
   if (request.headers.accept && request.headers.accept.includes('text/xml')) {
@@ -33,7 +32,7 @@ const respond = (request, response, status, object) => { //function to respond t
   response.end();
 };
 
-const getSuccess = (request, response) => { //success response
+const getSuccess = (request, response) => { // success response
   const responseObj = {
     message: 'This is a successful response.',
     id: 'success',
@@ -41,7 +40,7 @@ const getSuccess = (request, response) => { //success response
   return respond(request, response, 200, responseObj);
 };
 
-const getBadRequest = (request, response) => { //bad request response
+const getBadRequest = (request, response) => { // bad request response
   const parsedUrl = new URL(request.url, `http://${request.headers.host}`);
   if (parsedUrl.searchParams.get('valid') === 'true') {
     const responseObj = {
@@ -56,7 +55,7 @@ const getBadRequest = (request, response) => { //bad request response
   return respond(request, response, 400, responseObj);
 };
 
-const getUnauthorized = (request, response) => { //unauthorized response
+const getUnauthorized = (request, response) => { // unauthorized response
   const parsedUrl = new URL(request.url, `http://${request.headers.host}`);
   if (parsedUrl.searchParams.get('loggedIn') === 'yes') {
     const responseObj = {
@@ -71,7 +70,7 @@ const getUnauthorized = (request, response) => { //unauthorized response
   return respond(request, response, 401, responseObj);
 };
 
-const getForbidden = (request, response) => { //forbidden response
+const getForbidden = (request, response) => { // forbidden response
   const responseObj = {
     message: 'You do not have access to this content.',
     id: 'forbidden',
@@ -79,7 +78,7 @@ const getForbidden = (request, response) => { //forbidden response
   return respond(request, response, 403, responseObj);
 };
 
-const getInternal = (request, response) => { //internal server error response (aka server exploded)
+const getInternal = (request, response) => { // internal server error response (aka server exploded)
   const responseObj = {
     message: 'Internal Server Error. Something went wrong.',
     id: 'internal',
@@ -87,7 +86,7 @@ const getInternal = (request, response) => { //internal server error response (a
   return respond(request, response, 500, responseObj);
 };
 
-const getNotImplemented = (request, response) => { //not implemented response
+const getNotImplemented = (request, response) => { // not implemented response
   const responseObj = {
     message:
       'A GET request for this page has not been implemented yet. Check again later for updated content.',
@@ -96,7 +95,7 @@ const getNotImplemented = (request, response) => { //not implemented response
   return respond(request, response, 501, responseObj);
 };
 
-const notFound = (request, response) => { //not found response
+const notFound = (request, response) => { // not found response
   const responseObj = {
     message: 'The page you are looking for was not found.',
     id: 'notFound',
@@ -104,7 +103,7 @@ const notFound = (request, response) => { //not found response
   return respond(request, response, 404, responseObj);
 };
 
-module.exports = { //export functions
+module.exports = { // export functions
   getSuccess,
   getBadRequest,
   getUnauthorized,

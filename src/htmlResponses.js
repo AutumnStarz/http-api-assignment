@@ -1,5 +1,5 @@
-const fs = require('fs'); 
-const { get } = require('http');
+const fs = require('fs');
+// const http = require('http');
 
 const index = fs.readFileSync(`${__dirname}/../client/client.html`);
 

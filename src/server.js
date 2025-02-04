@@ -4,7 +4,7 @@ const jsonHandler = require('./jsonResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const urlStruct = { //url structure with endpoints
+const urlStruct = { // url structure with endpoints
   '/': htmlHandler.getIndex,
   '/style.css': htmlHandler.getCSS,
   '/success': jsonHandler.getSuccess,
